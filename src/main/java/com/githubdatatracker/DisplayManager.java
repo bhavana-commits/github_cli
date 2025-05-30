@@ -15,7 +15,23 @@ public class DisplayManager {
         System.out.println("----------------------");
 
         for (GitHubEvent event : data) {
-            System.out.println( event.getType() +" in repo " + event.getRepo().getName() + " on " + event.getCreated_at());
+            String eventType=event.getType();
+
+            switch (eventType)
+            {
+                case "PushEvent":
+                    System.out.println("Pushed "+event.getCommitCount()+" commits to "+event.getRepoName());
+                    break;
+                case "CreateEvent":
+                    System.out.println("Created a new Repository "+event.getRepoName());
+                    break;
+                case "WatchEvent":
+                    System.out.println("Starred "+event.getRepoName());
+                    break;
+                default:
+                    System.out.println(eventType+" in repo "+event.getRepoName()+" on "+event.getCreated_at());
+            }
+
         }
     }
 }

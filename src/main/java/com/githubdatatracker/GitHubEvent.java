@@ -1,51 +1,65 @@
 package com.githubdatatracker;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 public class GitHubEvent {
     private String type;
     private Repo repo;
+    private Payload payload;
     private String created_at;
 
-    public GitHubEvent()
+
+    private static class Repo
     {
+        private String name;
+
+        public String getName() { return name; }
 
     }
 
-    public GitHubEvent(String type,Repo repo,String created_at)
+    private static class Payload
     {
-        this.type=type;
-        this.repo=repo;
-        this.created_at=created_at;
+        private List<Commit> commits;
+
+        public List<Commit> getCommits() {
+            return commits;
+        }
     }
+
+    private static class Commit
+    {
+        private String sha;
+        private String message;
+
+        public String getSha() {
+            return sha;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
+    public int getCommitCount()
+    { if(payload!=null && payload.commits!=null)
+        return payload.commits.size();
+      return 0;
+    }
+
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
-    public Repo getRepo() {
-        return repo;
-    }
-
-    public void setRepo(Repo repo) {
-        this.repo = repo;
+    public String getRepoName() {
+        if(repo!=null && repo.name!=null)
+            return repo.name;
+        return "Unknown repo";
     }
 
     public String getCreated_at() {
         return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    @Override
-    public String toString() {
-        return type + " | Repo: " + repo + " | Date: " + created_at;
     }
 
 }
